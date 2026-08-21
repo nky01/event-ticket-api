@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
   <img src="https://img.shields.io/badge/DOCKER-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
 </p>
-API REST diseñada para la gestión y venta de entradas para eventos, recitales y festivales de música 🎶
+(en desarrollo) API REST diseñada para la gestión y venta de entradas para eventos, recitales y festivales de música
 
 ---
 
@@ -68,7 +68,7 @@ com.nkydev
   "category": {
     "id": 1
   }
-}`
+}
 ```
 
 ## ⚙️ Configuración e Instalación
@@ -80,7 +80,12 @@ git clone [https://github.com/tu-usuario/event-ticket-api.git](https://github.co
 
 Levantar PostgreSQL con Docker:
 ```
-docker run --name postgres-db -e POSTGRES_PASSWORD=secret -e POSTGRES_DB=ticket_db -p 5432:5432 -d postgres
+docker run --name event-ticket-api \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=database \
+  -p 5332:5432 \
+  -d postgres
 ```
 
 Ejecutar la aplicación:
