@@ -1,24 +1,37 @@
 package com.nkydev.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import tools.jackson.databind.DatabindException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name="events")
 public class Event {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String description;
-    private Date date;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime date;
     private String location;
     private Integer capacity;
-    private String category;
+
+    @ManyToOne
+    private Category category;
 
     public Event(){
 
     }
 
-    public Event(Integer id, String name, String description, Date date, String location, Integer capacity, String category) {
+    public Event(Integer id, String name, String description, LocalDateTime date, String location, Integer capacity, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -52,11 +65,11 @@ public class Event {
         this.description = description;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -76,11 +89,11 @@ public class Event {
         this.capacity = capacity;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

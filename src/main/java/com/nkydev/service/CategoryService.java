@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -26,13 +26,13 @@ public class CategoryService {
 
     public Category getCategoryById(Integer id){
         return categoryRepository
-                .findById(id).orElseThrow(() -> new IllegalStateException(id + " category not found"));
+                .findById(id).orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
     }
 
     @Transactional
     public void updateCategory(Integer id, Category categoryDetail){
         Category category = categoryRepository
-                .findById(id).orElseThrow(() -> new IllegalStateException(id + " category not found"));
+                .findById(id).orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
 
         category.setName(categoryDetail.getName());
     }
