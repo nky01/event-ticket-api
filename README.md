@@ -80,12 +80,7 @@ git clone [https://github.com/tu-usuario/event-ticket-api.git](https://github.co
 
 Levantar PostgreSQL con Docker:
 ```
-docker run --name event-ticket-api \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=password \
-  -e POSTGRES_DB=database \
-  -p 5332:5432 \
-  -d postgres
+docker compose up -d
 ```
 
 Ejecutar la aplicación:
