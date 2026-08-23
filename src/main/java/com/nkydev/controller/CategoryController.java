@@ -1,7 +1,9 @@
 package com.nkydev.controller;
 
-import com.nkydev.entity.Category;
+import com.nkydev.dto.category.CategoryRequestDTO;
+import com.nkydev.dto.category.CategoryResponseDTO;
 import com.nkydev.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,25 +19,29 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category){
-        return categoryService.createCategory(category);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryResponseDTO createCategory(@RequestBody CategoryRequestDTO request) {
+        return categoryService.createCategory(request);
     }
 
     @GetMapping
-    public List<Category> getCategories(){
+    public List<CategoryResponseDTO> getCategories() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Integer id){return categoryService.getCategoryById(id);}
+    public CategoryResponseDTO getCategoryById(@PathVariable Integer id) {
+        return categoryService.getCategoryById(id);
+    }
 
     @PutMapping("/{id}")
-    public void updateCategory(@PathVariable Integer id, @RequestBody Category categoryDetail){
-        categoryService.updateCategory(id, categoryDetail);
+    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @RequestBody CategoryRequestDTO request) {
+        return categoryService.updateCategory(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void deteleCategory (@PathVariable Integer id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategory(@PathVariable Integer id) {
         categoryService.deleteCategory(id);
     }
 }

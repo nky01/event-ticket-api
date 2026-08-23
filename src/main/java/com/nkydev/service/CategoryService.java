@@ -1,5 +1,7 @@
 package com.nkydev.service;
 
+import com.nkydev.dto.category.CategoryRequestDTO;
+import com.nkydev.dto.category.CategoryResponseDTO;
 import com.nkydev.entity.Category;
 import com.nkydev.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
@@ -16,28 +18,43 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category createCategory(Category category){
-        return categoryRepository.save(category);
+    public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
+        Category category = new Category();
+        category.setName(request.name());
+
+        Category savedCategory = categoryRepository.save(category);
+        return mapToResponseDTO(savedCategory);
     }
 
-    public List<Category> getAllCategories(){
-        return categoryRepository.findAll();
+    public List<CategoryResponseDTO> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .toList();
     }
 
-    public Category getCategoryById(Integer id){
-        return categoryRepository
-                .findById(id).orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
+    public CategoryResponseDTO getCategoryById(Integer id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
+        return mapToResponseDTO(category);
     }
 
     @Transactional
-    public void updateCategory(Integer id, Category categoryDetail){
-        Category category = categoryRepository
-                .findById(id).orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
+    public CategoryResponseDTO updateCategory(Integer id, CategoryRequestDTO request) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
 
-        category.setName(categoryDetail.getName());
+        category.setName(request.name());
+        // Al estar anotado con @Transactional, los cambios se guardan automáticamente
+
+        return mapToResponseDTO(category);
     }
 
     public void deleteCategory(Integer id) {
         categoryRepository.deleteById(id);
+    }
+
+    private CategoryResponseDTO mapToResponseDTO(Category category) {
+        return new CategoryResponseDTO(category.getId(), category.getName());
     }
 }
