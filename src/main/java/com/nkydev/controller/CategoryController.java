@@ -3,6 +3,7 @@ package com.nkydev.controller;
 import com.nkydev.dto.category.CategoryRequestDTO;
 import com.nkydev.dto.category.CategoryResponseDTO;
 import com.nkydev.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponseDTO createCategory(@RequestBody CategoryRequestDTO request) {
+    public CategoryResponseDTO createCategory(@Valid @RequestBody CategoryRequestDTO request) {
         return categoryService.createCategory(request);
     }
 
@@ -35,7 +36,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @RequestBody CategoryRequestDTO request) {
+    public CategoryResponseDTO updateCategory(@PathVariable Integer id, @Valid @RequestBody CategoryRequestDTO request) {
         return categoryService.updateCategory(id, request);
     }
 
