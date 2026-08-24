@@ -18,8 +18,6 @@ public class Event {
     private Integer id;
     private String name;
     private String description;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
     private String location;
     private Integer capacity;

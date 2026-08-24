@@ -1,5 +1,7 @@
 package com.nkydev.controller;
 
+import com.nkydev.dto.event.EventRequestDTO;
+import com.nkydev.dto.event.EventResponseDTO;
 import com.nkydev.entity.Event;
 import com.nkydev.service.EventService;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +19,23 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event){
-        return eventService.createEvent(event);
+    public EventResponseDTO createEvent(@RequestBody EventRequestDTO eventRequestDTO){
+        return eventService.createEvent(eventRequestDTO);
     }
 
     @GetMapping
-    public List<Event> getEvents(){
+    public List<EventResponseDTO> getEvents(){
         return eventService.getAllEvents();
     }
 
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Integer id){
+    public EventResponseDTO getEventById(@PathVariable Integer id){
         return eventService.getEventById(id);
     }
 
     @PutMapping("/{id}")
-    public void updateEvent(@PathVariable Integer id, @RequestBody Event eventDetails){
-        eventService.updateEvent(id, eventDetails);
+    public EventResponseDTO updateEvent(@PathVariable Integer id, @RequestBody EventRequestDTO eventRequestDTO){
+        return eventService.updateEvent(id, eventRequestDTO);
     }
 
     @DeleteMapping("/{id}")

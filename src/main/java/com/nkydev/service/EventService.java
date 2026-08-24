@@ -1,5 +1,8 @@
 package com.nkydev.service;
 
+import com.nkydev.dto.category.CategoryResponseDTO;
+import com.nkydev.dto.event.EventRequestDTO;
+import com.nkydev.dto.event.EventResponseDTO;
 import com.nkydev.entity.Category;
 import com.nkydev.entity.Event;
 import com.nkydev.repository.CategoryRepository;
@@ -20,37 +23,70 @@ public class EventService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+    public List<EventResponseDTO> getAllEvents() {
+        return eventRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .toList();
     }
 
-    public Event createEvent(Event event) {
-        Category category = categoryRepository.findById(event.getCategory().getId())
+    public EventResponseDTO createEvent(EventRequestDTO request) {
+        Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new IllegalStateException("category not found"));
 
+        Event event = new Event();
+        event.setName(request.name());
+        event.setDescription(request.description());
+        event.setDate(request.date());
+        event.setLocation(request.location());
+        event.setCapacity(request.capacity());
         event.setCategory(category);
-        return eventRepository.save(event);
+
+        Event savedEvent = eventRepository.save(event);
+        return mapToResponseDTO(savedEvent);
     }
 
-    public Event getEventById(Integer id) {
-        return eventRepository.findById(id)
+    public EventResponseDTO getEventById(Integer id) {
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("event not found with ID: " + id));
+
+        return mapToResponseDTO(event);
     }
 
     @Transactional
-    public void updateEvent(Integer id, Event eventDetails) {
+    public EventResponseDTO updateEvent(Integer id, EventRequestDTO request) {
         Event event = eventRepository
                 .findById(id).orElseThrow(() -> new IllegalStateException("event not found with ID: " + id));
 
-        event.setName(eventDetails.getName());
-        event.setDescription(eventDetails.getDescription());
-        event.setDate(eventDetails.getDate());
-        event.setLocation(eventDetails.getLocation());
-        event.setCapacity(eventDetails.getCapacity());
-        event.setCategory(eventDetails.getCategory());
+        Category category = categoryRepository.findById(request.categoryId())
+                .orElseThrow(() -> new IllegalStateException("category not found with ID: " + request.categoryId()));
+
+        event.setName(request.name());
+        event.setDescription(request.description());
+        event.setDate(request.date());
+        event.setLocation(request.location());
+        event.setCapacity(request.capacity());
+        event.setCategory(category);
+
+        return mapToResponseDTO(event);
     }
 
     public void deleteEvent(Integer id) {
         eventRepository.deleteById(id);
+    }
+
+    public EventResponseDTO mapToResponseDTO(Event event){
+        CategoryResponseDTO categoryDTO = new CategoryResponseDTO(
+                event.getCategory().getId(),
+                event.getCategory().getName()
+        );
+
+        return new EventResponseDTO(event.getId(),
+                                    event.getName(),
+                                    event.getDescription(),
+                                    event.getDate(),
+                                    event.getLocation(),
+                                    event.getCapacity(),
+                                    categoryDTO);
     }
 }

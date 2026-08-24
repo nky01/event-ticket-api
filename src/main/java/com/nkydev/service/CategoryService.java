@@ -45,7 +45,6 @@ public class CategoryService {
                 .orElseThrow(() -> new IllegalStateException("category not found with ID: " + id));
 
         category.setName(request.name());
-        // Al estar anotado con @Transactional, los cambios se guardan automáticamente
 
         return mapToResponseDTO(category);
     }
