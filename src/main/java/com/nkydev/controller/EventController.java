@@ -4,6 +4,8 @@ import com.nkydev.dto.event.EventRequestDTO;
 import com.nkydev.dto.event.EventResponseDTO;
 import com.nkydev.entity.Event;
 import com.nkydev.service.EventService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,8 @@ public class EventController {
     }
 
     @PostMapping
-    public EventResponseDTO createEvent(@RequestBody EventRequestDTO eventRequestDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public EventResponseDTO createEvent(@Valid @RequestBody EventRequestDTO eventRequestDTO){
         return eventService.createEvent(eventRequestDTO);
     }
 
@@ -34,11 +37,12 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public EventResponseDTO updateEvent(@PathVariable Integer id, @RequestBody EventRequestDTO eventRequestDTO){
+    public EventResponseDTO updateEvent(@PathVariable Integer id, @Valid @RequestBody EventRequestDTO eventRequestDTO){
         return eventService.updateEvent(id, eventRequestDTO);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable Integer id){
         eventService.deleteEvent(id);
     }

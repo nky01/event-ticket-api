@@ -1,6 +1,7 @@
 package com.nkydev.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nkydev.dto.category.CategoryResponseDTO;
 
 import java.time.LocalDateTime;
 
@@ -12,4 +13,4 @@ public record EventResponseDTO(Integer id,
                                LocalDateTime date,
                                String location,
                                Integer capacity,
-                               com.nkydev.dto.category.CategoryResponseDTO categoryId) {}
+                               CategoryResponseDTO categoryId) {}
