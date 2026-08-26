@@ -2,7 +2,7 @@ package com.nkydev.dto.tickettype;
 
 import java.math.BigDecimal;
 
-public record TicketTypeResponse(
+public record TicketTypeResponseDTO(
         Integer id,
         String name,
         String description,

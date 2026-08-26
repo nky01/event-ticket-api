@@ -22,8 +22,8 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventResponseDTO createEvent(@Valid @RequestBody EventRequestDTO eventRequestDTO){
-        return eventService.createEvent(eventRequestDTO);
+    public EventResponseDTO createEvent(@Valid @RequestBody EventRequestDTO request){
+        return eventService.createEvent(request);
     }
 
     @GetMapping
@@ -37,8 +37,8 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public EventResponseDTO updateEvent(@PathVariable Integer id, @Valid @RequestBody EventRequestDTO eventRequestDTO){
-        return eventService.updateEvent(id, eventRequestDTO);
+    public EventResponseDTO updateEvent(@PathVariable Integer id, @Valid @RequestBody EventRequestDTO request){
+        return eventService.updateEvent(id, request);
     }
 
     @DeleteMapping("/{id}")

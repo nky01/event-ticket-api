@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record TicketTypeRequest(
+public record TicketTypeRequestDTO(
         @NotBlank(message = "Name is required")
         String name,
 

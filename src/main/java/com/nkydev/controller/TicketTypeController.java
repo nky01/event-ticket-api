@@ -1,18 +1,48 @@
 package com.nkydev.controller;
 
-import com.nkydev.dto.tickettype.TicketTypeResponse;
-import com.nkydev.entity.TicketType;
+import com.nkydev.dto.tickettype.TicketTypeRequestDTO;
+import com.nkydev.dto.tickettype.TicketTypeResponseDTO;
+import com.nkydev.service.TicketTypeService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/ticket-types")
 public class TicketTypeController {
 
-    public void createTicketType (@Valid @RequestBody TicketType ticketType){
+    private final TicketTypeService ticketTypeService;
 
+    public TicketTypeController(TicketTypeService ticketTypeService) {
+        this.ticketTypeService = ticketTypeService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TicketTypeResponseDTO createTicketType (@Valid @RequestBody TicketTypeRequestDTO request){
+        return ticketTypeService.createTicketType(request);
+    }
+
+    @GetMapping("/{id}")
+    public List<TicketTypeResponseDTO> getTicketsType (TicketTypeRequestDTO request){
+        return ticketTypeService.getAllTicketsType(request);
+    }
+
+    @GetMapping("/{id}")
+    public TicketTypeResponseDTO getTicketTypeById(@PathVariable Integer id){
+        return ticketTypeService.getTicketTypeById(id);
+    }
+
+    @PutMapping("/{id}")
+    public TicketTypeResponseDTO updateTicketType(@PathVariable Integer id, @Valid @RequestBody TicketTypeRequestDTO request){
+        return ticketTypeService.updateTicketType(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTicketType(@PathVariable Integer id) {
+        ticketTypeService.deleteTicketType(id);
+    }
 }
