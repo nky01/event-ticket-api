@@ -77,6 +77,13 @@ public class TicketTypeService {
         ticketTypeRepository.deleteById(id);
     }
 
+    public List<TicketTypeResponseDTO> getTicketTypesByEventId(Integer eventId){
+        return ticketTypeRepository.findByEventId(eventId)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .toList();
+    }
+
     public TicketTypeResponseDTO mapToResponseDTO(TicketType ticketType) {
         CategoryResponseDTO categoryDTO = new CategoryResponseDTO(
                 ticketType.getEvent().getCategory().getId(),

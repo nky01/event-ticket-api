@@ -89,4 +89,11 @@ public class EventService {
                                     event.getCapacity(),
                                     categoryDTO);
     }
+
+    public List<EventResponseDTO> getEventsByCategoryId(Integer categoryId) {
+        return eventRepository.findByCategoryId(categoryId)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .toList();
+    }
 }

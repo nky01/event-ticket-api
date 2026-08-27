@@ -2,7 +2,9 @@ package com.nkydev.controller;
 
 import com.nkydev.dto.category.CategoryRequestDTO;
 import com.nkydev.dto.category.CategoryResponseDTO;
+import com.nkydev.dto.event.EventResponseDTO;
 import com.nkydev.service.CategoryService;
+import com.nkydev.service.EventService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final EventService eventService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, EventService eventService) {
         this.categoryService = categoryService;
+        this.eventService = eventService;
     }
 
     @PostMapping
@@ -44,5 +48,9 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Integer id) {
         categoryService.deleteCategory(id);
+    }
+
+    @GetMapping("/{categoryId}/events")    public List<EventResponseDTO> getEventByCategoryId(@PathVariable Integer categoryId){
+        return eventService.getEventsByCategoryId(categoryId);
     }
 }

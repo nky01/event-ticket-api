@@ -2,6 +2,7 @@ package com.nkydev.controller;
 
 import com.nkydev.dto.tickettype.TicketTypeRequestDTO;
 import com.nkydev.dto.tickettype.TicketTypeResponseDTO;
+import com.nkydev.repository.TicketTypeRepository;
 import com.nkydev.service.TicketTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,10 @@ public class TicketTypeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTicketType(@PathVariable Integer id) {
         ticketTypeService.deleteTicketType(id);
+    }
+
+    @GetMapping("/{eventId}/ticket-types")
+    public List<TicketTypeResponseDTO> getTicketTypesByEventId(@PathVariable Integer eventId){
+        return ticketTypeService.getTicketTypesByEventId(eventId);
     }
 }
