@@ -25,9 +25,9 @@ public class TicketTypeController {
         return ticketTypeService.createTicketType(request);
     }
 
-    @GetMapping("/{id}")
-    public List<TicketTypeResponseDTO> getTicketsType (TicketTypeRequestDTO request){
-        return ticketTypeService.getAllTicketsType(request);
+    @GetMapping
+    public List<TicketTypeResponseDTO> getTicketsType (){
+        return ticketTypeService.getAllTicketsType();
     }
 
     @GetMapping("/{id}")
