@@ -2,8 +2,10 @@ package com.nkydev.controller;
 
 import com.nkydev.dto.event.EventRequestDTO;
 import com.nkydev.dto.event.EventResponseDTO;
+import com.nkydev.dto.tickettype.TicketTypeResponseDTO;
 import com.nkydev.entity.Event;
 import com.nkydev.service.EventService;
+import com.nkydev.service.TicketTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final TicketTypeService ticketTypeService;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, TicketTypeService ticketTypeService) {
         this.eventService = eventService;
+        this.ticketTypeService = ticketTypeService;
     }
 
     @PostMapping
@@ -45,5 +49,10 @@ public class EventController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable Integer id){
         eventService.deleteEvent(id);
+    }
+
+    @GetMapping("/{eventId}/ticket-types")
+    public List<TicketTypeResponseDTO> getTicketTypesByEventId(@PathVariable Integer eventId){
+        return ticketTypeService.getTicketTypesByEventId(eventId);
     }
 }

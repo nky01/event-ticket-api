@@ -46,9 +46,4 @@ public class TicketTypeController {
     public void deleteTicketType(@PathVariable Integer id) {
         ticketTypeService.deleteTicketType(id);
     }
-
-    @GetMapping("/{eventId}/ticket-types")
-    public List<TicketTypeResponseDTO> getTicketTypesByEventId(@PathVariable Integer eventId){
-        return ticketTypeService.getTicketTypesByEventId(eventId);
-    }
 }

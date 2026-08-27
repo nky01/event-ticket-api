@@ -6,32 +6,25 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tickettypes")
+@Table(name = "ticket-types")
 public class TicketType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(nullable = false, length = 100)
     private String name;
-
-    @Column(length = 500)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2) // Recomendado conservar para evitar truncamiento decimal en dinero
     private BigDecimal price;
-
-    @Column(nullable = false)
     private Integer quantity;
-
-    @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;
 
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
     private Event event;
 
-    public TicketType(){}
+    public TicketType() {}
 
     public TicketType(Integer id, String name, String description, BigDecimal price, Integer quantity, Event event) {
         this.id = id;
