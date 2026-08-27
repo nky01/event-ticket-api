@@ -13,4 +13,4 @@ public record EventResponseDTO(Integer id,
                                LocalDateTime date,
                                String location,
                                Integer capacity,
-                               CategoryResponseDTO categoryId) {}
+                               CategoryResponseDTO category) {}

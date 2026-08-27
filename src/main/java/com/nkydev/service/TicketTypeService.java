@@ -25,7 +25,7 @@ public class TicketTypeService {
     }
 
     public TicketTypeResponseDTO createTicketType(@Valid TicketTypeRequestDTO request) {
-        Event event = eventRepository.findById(request.idEvent())
+        Event event = eventRepository.findById(request.eventId())
                 .orElseThrow(() -> new IllegalStateException("event not found"));
 
         TicketType ticketType = new TicketType();
@@ -59,8 +59,8 @@ public class TicketTypeService {
         TicketType ticketType= ticketTypeRepository
                 .findById(id).orElseThrow(() -> new IllegalStateException("ticket type not found by ID: " + id));
 
-        Event event = eventRepository.findById(request.idEvent())
-                .orElseThrow(() -> new IllegalStateException("event not found with ID: " + request.idEvent()));
+        Event event = eventRepository.findById(request.eventId())
+                .orElseThrow(() -> new IllegalStateException("event not found with ID: " + request.eventId()));
 
         ticketType.setName(request.name());
         ticketType.setDescription(request.description());

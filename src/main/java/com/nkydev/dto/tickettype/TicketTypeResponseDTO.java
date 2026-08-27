@@ -9,6 +9,6 @@ public record TicketTypeResponseDTO(
         BigDecimal price,
         Integer quantity,
         Integer availableQuantity,
-        Integer idEvent
+        Integer eventId
 )
 {}
