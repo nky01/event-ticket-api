@@ -1,0 +1,58 @@
+package com.nkydev.service;
+
+import com.nkydev.dto.user.UserRequestDTO;
+import com.nkydev.dto.user.UserResponseDTO;
+import com.nkydev.entity.Role;
+import com.nkydev.entity.User;
+import com.nkydev.repository.UserRepository;
+import jakarta.validation.Valid;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public UserResponseDTO createUser(@Valid UserRequestDTO request) {
+        User user = new User();
+        user.setName(request.name());
+        user.setEmail(request.email());
+
+        user.setRole(Role.USER);
+
+        User savedUser = userRepository.save(user);
+        return mapToResponseDTO(savedUser);
+    }
+
+    public List<UserResponseDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .toList();
+    }
+
+    public UserResponseDTO getUserById(Integer id) {
+        
+    }
+
+    public UserResponseDTO updateUser(Integer id, @Valid UserRequestDTO request) {
+    }
+
+    public void deleteUser(Integer id) {
+    }
+
+    public UserResponseDTO mapToResponseDTO(User user){
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole(),
+                user.getCreatedAt()) ;
+    }
+}

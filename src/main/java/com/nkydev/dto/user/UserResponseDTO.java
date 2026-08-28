@@ -10,4 +10,5 @@ public record UserResponseDTO(
         String email,
         Role role,
         LocalDateTime createdAt
-) {}
+) {
+}
