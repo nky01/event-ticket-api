@@ -1,9 +1,8 @@
 package com.nkydev.dto.user;
 
-import com.nkydev.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record UserRequestDTO(
         @NotBlank(message = "name is required")
@@ -12,7 +11,6 @@ public record UserRequestDTO(
         @Email(message = "email format is invalid")
         String email,
         @NotBlank(message = "password is required")
-        String password,
-        @NotNull(message = "you have to select a role")
-        Role role
+        @Size(min = 8, message = "password must contain at least 8 characters")
+        String password
 ) {}
