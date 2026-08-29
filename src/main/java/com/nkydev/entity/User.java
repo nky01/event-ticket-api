@@ -15,6 +15,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
     @CreationTimestamp
     private LocalDateTime createdAt; // fecha y hora de cuando se registro la cuenta

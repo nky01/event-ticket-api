@@ -8,6 +8,7 @@ import com.nkydev.service.EventService;
 import com.nkydev.service.TicketTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,16 +26,15 @@ public class EventController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EventResponseDTO createEvent(@Valid @RequestBody EventRequestDTO request){
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    public EventResponseDTO createEvent(@Valid @RequestBody EventRequestDTO request) {
         return eventService.createEvent(request);
     }
 
     @GetMapping
-    public List<EventResponseDTO> getEvents(){
+    public List<EventResponseDTO> getAllEvents() {
         return eventService.getAllEvents();
     }
-
     @GetMapping("/{id}")
     public EventResponseDTO getEventById(@PathVariable Integer id){
         return eventService.getEventById(id);
