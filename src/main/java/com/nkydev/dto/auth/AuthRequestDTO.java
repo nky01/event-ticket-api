@@ -1,4 +1,4 @@
-package com.nkydev.dto;
+package com.nkydev.dto.auth;
 
 public record AuthRequestDTO(String email, String password) {
 }
