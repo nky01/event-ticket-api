@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +19,12 @@ public class Purchase {
     private User user;
     private LocalDateTime purchaseDate;
     private BigDecimal totalAmount;
+
     @Enumerated(EnumType.STRING)
     private PurchaseStatus purchaseStatus;
+
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PurchaseItem> items = new ArrayList<>();
 
     public Purchase(){}
 
@@ -28,6 +34,16 @@ public class Purchase {
         this.purchaseDate = purchaseDate;
         this.totalAmount = totalAmount;
         this.purchaseStatus = purchaseStatus;
+    }
+
+    public void addItem(PurchaseItem item) {
+        items.add(item);
+        item.setPurchase(this);
+    }
+
+    public void removeItem(PurchaseItem item) {
+        items.remove(item);
+        item.setPurchase(null);
     }
 
     public Integer getId() {
@@ -68,6 +84,14 @@ public class Purchase {
 
     public void setPurchaseStatus(PurchaseStatus purchaseStatus) {
         this.purchaseStatus = purchaseStatus;
+    }
+
+    public List<PurchaseItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<PurchaseItem> items) {
+        this.items = items;
     }
 
     @Override

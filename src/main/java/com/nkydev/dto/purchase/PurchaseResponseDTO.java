@@ -1,9 +1,11 @@
 package com.nkydev.dto.purchase;
 
+import com.nkydev.dto.purchaseItem.PurchaseItemResponseDTO;
 import com.nkydev.entity.PurchaseStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record PurchaseResponseDTO(
         Long id,
@@ -11,5 +13,6 @@ public record PurchaseResponseDTO(
         String userName,
         LocalDateTime purchaseDate,
         BigDecimal totalAmount,
-        PurchaseStatus status
+        PurchaseStatus status,
+        List<PurchaseItemResponseDTO> items
 ) {}

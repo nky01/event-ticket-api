@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ticket-types")
+@Table(name = "ticket_types")
 public class TicketType {
 
     @Id
