@@ -1,4 +1,4 @@
-package com.nkydev.entity;
+package com.nkydev.entity.enums;
 
 public enum PurchaseStatus {
     PENDING,

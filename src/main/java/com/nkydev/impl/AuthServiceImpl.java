@@ -5,7 +5,7 @@ import com.nkydev.dto.auth.AuthRequestDTO;
 import com.nkydev.dto.auth.AuthResponseDTO;
 import com.nkydev.dto.user.UserRequestDTO;
 import com.nkydev.dto.user.UserResponseDTO;
-import com.nkydev.entity.Role;
+import com.nkydev.entity.enums.Role;
 import com.nkydev.entity.User;
 import com.nkydev.repository.UserRepository;
 import com.nkydev.service.AuthService;

@@ -1,5 +1,6 @@
 package com.nkydev.entity;
 
+import com.nkydev.entity.enums.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 

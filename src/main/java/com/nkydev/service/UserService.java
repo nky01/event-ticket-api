@@ -2,7 +2,7 @@ package com.nkydev.service;
 
 import com.nkydev.dto.user.UserRequestDTO;
 import com.nkydev.dto.user.UserResponseDTO;
-import com.nkydev.entity.Role;
+import com.nkydev.entity.enums.Role;
 import com.nkydev.entity.User;
 import com.nkydev.repository.UserRepository;
 import jakarta.transaction.Transactional;

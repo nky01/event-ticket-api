@@ -1,5 +1,7 @@
 package com.nkydev.entity;
 
+import com.nkydev.entity.enums.PaymentMethod;
+import com.nkydev.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

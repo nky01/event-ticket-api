@@ -1,7 +1,7 @@
 package com.nkydev.dto.payment;
 
-import com.nkydev.entity.PaymentMethod;
-import com.nkydev.entity.PaymentStatus;
+import com.nkydev.entity.enums.PaymentMethod;
+import com.nkydev.entity.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

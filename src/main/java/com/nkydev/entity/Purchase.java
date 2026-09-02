@@ -1,5 +1,6 @@
 package com.nkydev.entity;
 
+import com.nkydev.entity.enums.PurchaseStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

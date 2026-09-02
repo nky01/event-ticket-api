@@ -5,6 +5,7 @@ import com.nkydev.dto.purchase.PurchaseResponseDTO;
 import com.nkydev.dto.purchaseItem.PurchaseItemRequestDTO;
 import com.nkydev.dto.purchaseItem.PurchaseItemResponseDTO;
 import com.nkydev.entity.*;
+import com.nkydev.entity.enums.PurchaseStatus;
 import com.nkydev.repository.PurchaseRepository;
 import com.nkydev.repository.TicketTypeRepository;
 import com.nkydev.repository.UserRepository;

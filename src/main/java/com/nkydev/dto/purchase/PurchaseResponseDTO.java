@@ -1,7 +1,7 @@
 package com.nkydev.dto.purchase;
 
 import com.nkydev.dto.purchaseItem.PurchaseItemResponseDTO;
-import com.nkydev.entity.PurchaseStatus;
+import com.nkydev.entity.enums.PurchaseStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

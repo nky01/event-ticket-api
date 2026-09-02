@@ -1,6 +1,6 @@
 package com.nkydev.dto.user;
 
-import com.nkydev.entity.Role;
+import com.nkydev.entity.enums.Role;
 
 import java.time.LocalDateTime;
 

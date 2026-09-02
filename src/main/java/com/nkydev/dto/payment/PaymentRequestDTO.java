@@ -1,6 +1,6 @@
 package com.nkydev.dto.payment;
 
-import com.nkydev.entity.PaymentMethod;
+import com.nkydev.entity.enums.PaymentMethod;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
