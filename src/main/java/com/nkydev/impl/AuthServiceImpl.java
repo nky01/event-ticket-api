@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponseDTO register(UserRequestDTO request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("the email is registered");
+            throw new RuntimeException("the email is already registered");
         }
 
         User user = new User();
@@ -59,15 +59,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO login(AuthRequestDTO request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                )
-        );
-
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("user not found"));
+                .orElseThrow(() -> new RuntimeException("user not found with email: " + request.email()));
+
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new RuntimeException("Invalid password for user: " + request.email());
+        }
 
         String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name());
 

@@ -38,14 +38,13 @@ public class EventService {
 
     public EventResponseDTO createEvent(EventRequestDTO request) {
         Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new IllegalStateException("category not found"));
+                .orElseThrow(() -> new RuntimeException("category not found with ID: " + request.categoryId()));
 
-        // se obtien el mail del usuario autenticado x la via JWT
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentEmail = authentication.getName();
 
         User organizer = userRepository.findByEmail(currentEmail)
-                .orElseThrow(() -> new IllegalStateException("organizer user not found with email: " + currentEmail));
+                .orElseThrow(() -> new RuntimeException("organizer user not found with email: " + currentEmail));
 
         Event event = new Event();
         event.setName(request.name());
@@ -62,18 +61,18 @@ public class EventService {
 
     public EventResponseDTO getEventById(Integer id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("event not found with ID: " + id));
+                .orElseThrow(() -> new RuntimeException("event not found with ID: " + id));
 
         return mapToResponseDTO(event);
     }
 
     @Transactional
     public EventResponseDTO updateEvent(Integer id, EventRequestDTO request) {
-        Event event = eventRepository
-                .findById(id).orElseThrow(() -> new IllegalStateException("event not found with ID: " + id));
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("event not found with ID: " + id));
 
         Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new IllegalStateException("category not found with ID: " + request.categoryId()));
+                .orElseThrow(() -> new RuntimeException("category not found with ID: " + request.categoryId()));
 
         event.setName(request.name());
         event.setDescription(request.description());
@@ -86,22 +85,27 @@ public class EventService {
     }
 
     public void deleteEvent(Integer id) {
+        if (!eventRepository.existsById(id)) {
+            throw new RuntimeException("event not found with ID: " + id);
+        }
         eventRepository.deleteById(id);
     }
 
-    public EventResponseDTO mapToResponseDTO(Event event){
+    public EventResponseDTO mapToResponseDTO(Event event) {
         CategoryResponseDTO categoryDTO = new CategoryResponseDTO(
                 event.getCategory().getId(),
                 event.getCategory().getName()
         );
 
-        return new EventResponseDTO(event.getId(),
-                                    event.getName(),
-                                    event.getDescription(),
-                                    event.getDate(),
-                                    event.getLocation(),
-                                    event.getCapacity(),
-                                    categoryDTO);
+        return new EventResponseDTO(
+                event.getId(),
+                event.getName(),
+                event.getDescription(),
+                event.getDate(),
+                event.getLocation(),
+                event.getCapacity(),
+                categoryDTO
+        );
     }
 
     public List<EventResponseDTO> getEventsByCategoryId(Integer categoryId) {
