@@ -9,8 +9,9 @@ import com.nkydev.entity.enums.PurchaseStatus;
 import com.nkydev.repository.PurchaseRepository;
 import com.nkydev.repository.TicketTypeRepository;
 import com.nkydev.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,9 +31,10 @@ public class PurchaseService {
 
     @Transactional
     public PurchaseResponseDTO createPurchase(PurchaseRequestDTO request){
-        // buscar el usuario x id
-        User user = userRepository.findById(request.userId().intValue())
-                .orElseThrow(()-> new RuntimeException("user not found with ID: " + request.userId()));
+        // se obtiene el usuario autenticado desde el contexto de seguridad (JWT)
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + userEmail));
 
         // se crea la base de la compra (purchase)
         Purchase purchase = new Purchase();
@@ -41,15 +43,16 @@ public class PurchaseService {
         purchase.setPurchaseStatus(PurchaseStatus.PENDING);
 
         // inicializa el total en cero
-        BigDecimal totalAmount= BigDecimal.ZERO;
+        BigDecimal totalAmount = BigDecimal.ZERO;
 
-        for (PurchaseItemRequestDTO itemDTO: request.items()){
+        // recorre los items, valida el stock y calcula los montos
+        for (PurchaseItemRequestDTO itemDTO : request.items()){
             TicketType ticketType = ticketTypeRepository.findById(itemDTO.ticketTypeId().intValue())
-                    .orElseThrow(()-> new RuntimeException("ticket type not found with ID: " + itemDTO.ticketTypeId()));
+                    .orElseThrow(() -> new RuntimeException("Ticket type not found with ID: " + itemDTO.ticketTypeId()));
 
             // se valida el stock
             if (ticketType.getAvailableQuantity() < itemDTO.quantity()){
-                throw new RuntimeException("not enough stock for ticket: "+ ticketType.getName());
+                throw new RuntimeException("Not enough stock for ticket: " + ticketType.getName());
             }
 
             //settea el stock descontando los recien tomados
@@ -68,11 +71,9 @@ public class PurchaseService {
             purchase.addItem(item);
         }
 
-        // se guarda la compra
         purchase.setTotalAmount(totalAmount);
         Purchase savedPurchase = purchaseRepository.save(purchase);
 
-        // y se retorna el stock actualizado al DTO
         return mapToPurchase(savedPurchase);
     }
 
@@ -86,17 +87,15 @@ public class PurchaseService {
     public PurchaseResponseDTO getPurchaseById(Integer id) {
         return purchaseRepository.findById(id)
                 .map(this::mapToPurchase)
-                .orElseThrow(() -> new RuntimeException("purchase not found with id: " + id)); // 👈 Agregado ; y map
+                .orElseThrow(() -> new RuntimeException("Purchase not found with id: " + id));
     }
 
     public void deletePurchase(Integer id) {
         if (!purchaseRepository.existsById(id)) {
-            throw new RuntimeException("purchase not found with id: " + id);
+            throw new RuntimeException("Purchase not found with id: " + id);
         }
         purchaseRepository.deleteById(id);
     }
-
-    /////////////////
 
     public List<PurchaseItemResponseDTO> getItemsByPurchaseId(Integer purchaseId) {
         Purchase purchase = purchaseRepository.findById(purchaseId)
@@ -117,8 +116,6 @@ public class PurchaseService {
                 .map(this::mapToPurchaseItemDto)
                 .orElseThrow(() -> new RuntimeException("Item with ID " + itemId + " not found in purchase " + purchaseId));
     }
-
-    ////////////////
 
     public PurchaseResponseDTO mapToPurchase(Purchase purchase) {
         List<PurchaseItemResponseDTO> itemDTOs = purchase.getItems().stream()

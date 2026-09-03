@@ -6,6 +6,7 @@ import com.nkydev.dto.purchaseItem.PurchaseItemResponseDTO;
 import com.nkydev.service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +22,19 @@ public class PurchaseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public PurchaseResponseDTO createPurchase(@Valid @RequestBody PurchaseRequestDTO request) {
         return purchaseService.createPurchase(request);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<PurchaseResponseDTO> getPurchases() {
         return purchaseService.getAllPurchases();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @purchaseSecurity.isOwner(#id, authentication.name)")
     public PurchaseResponseDTO getPurchaseById(@PathVariable Integer id) {
         return purchaseService.getPurchaseById(id);
     }

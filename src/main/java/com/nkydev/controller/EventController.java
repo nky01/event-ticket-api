@@ -35,18 +35,21 @@ public class EventController {
     public List<EventResponseDTO> getAllEvents() {
         return eventService.getAllEvents();
     }
+
     @GetMapping("/{id}")
     public EventResponseDTO getEventById(@PathVariable Integer id){
         return eventService.getEventById(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @eventSecurity.isOrganizer(#id, authentication.name)")
     public EventResponseDTO updateEvent(@PathVariable Integer id, @Valid @RequestBody EventRequestDTO request){
         return eventService.updateEvent(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN') or @eventSecurity.isOrganizer(#id, authentication.name)")
     public void deleteEvent(@PathVariable Integer id){
         eventService.deleteEvent(id);
     }

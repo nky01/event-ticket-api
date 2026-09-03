@@ -5,6 +5,7 @@ import com.nkydev.dto.payment.PaymentResponseDTO;
 import com.nkydev.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class PaymentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public PaymentResponseDTO processPayment(@Valid @RequestBody PaymentRequestDTO request) {
         return paymentService.processPayment(request);
     }

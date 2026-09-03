@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public UserResponseDTO getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }

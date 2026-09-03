@@ -7,11 +7,10 @@ import com.nkydev.dto.user.UserResponseDTO;
 import com.nkydev.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -21,12 +20,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponseDTO register(@Valid @RequestBody UserRequestDTO request) {
+        return authService.register(request);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO request) {
-        return ResponseEntity.ok(authService.login(request));
+    public AuthResponseDTO login(@Valid @RequestBody AuthRequestDTO request) {
+        return authService.login(request);
     }
 }

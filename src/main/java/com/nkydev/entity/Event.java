@@ -21,6 +21,10 @@ public class Event {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id")
+    private User organizer;
+
     public Event(){
 
     }
@@ -89,6 +93,14 @@ public class Event {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(User organizer) {
+        this.organizer = organizer;
     }
 
     @Override
