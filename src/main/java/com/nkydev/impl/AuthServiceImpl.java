@@ -37,14 +37,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserResponseDTO register(UserRequestDTO request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("the email is already registered");
+            throw new RuntimeException("The email is already registered");
         }
 
         User user = new User();
         user.setName(request.name());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole(Role.USER);
+
+        user.setRole(request.role() != null ? request.role() : Role.USER);
 
         User savedUser = userRepository.save(user);
 
@@ -59,12 +60,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO login(AuthRequestDTO request) {
-        User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("user not found with email: " + request.email()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
+        );
 
-        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid password for user: " + request.email());
-        }
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + request.email()));
 
         String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name());
 

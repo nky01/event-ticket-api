@@ -33,6 +33,10 @@ public class JwtUtils {
         return extractAllClaims(token).getSubject();
     }
 
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
     public boolean isTokenValid(String token, String username) {
         try {
             final String extractedUsername = extractUsername(token);

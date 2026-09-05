@@ -42,14 +42,14 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or @eventSecurity.isOrganizer(#id, authentication.name)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public EventResponseDTO updateEvent(@PathVariable Integer id, @Valid @RequestBody EventRequestDTO request){
         return eventService.updateEvent(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or @eventSecurity.isOrganizer(#id, authentication.name)")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZER')")
     public void deleteEvent(@PathVariable Integer id){
         eventService.deleteEvent(id);
     }
