@@ -57,6 +57,7 @@ public class PurchaseService {
 
             //settea el stock descontando los recien tomados
             ticketType.setAvailableQuantity(ticketType.getAvailableQuantity() - itemDTO.quantity());
+            ticketTypeRepository.save(ticketType); // guarda la actualizacion del stock en la base de datos
 
             BigDecimal subtotal = ticketType.getPrice().multiply(BigDecimal.valueOf(itemDTO.quantity()));
             totalAmount = totalAmount.add(subtotal);
