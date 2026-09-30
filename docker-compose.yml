@@ -1,23 +1,16 @@
 services:
   db:
     container_name: event-ticket-api
-    image: postgres:latest
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database
-      PGDATA: /data/postgres
     volumes:
-      - db:/data/postgres
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5332:5432"
-    networks:
-      - db
     restart: unless-stopped
 
-networks:
-  db:
-    driver: bridge
-
 volumes:
-  db:
+  db_data:
